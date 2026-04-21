@@ -44,7 +44,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    # ── Load, convert to grayscale, and resize ────────────────────────────────
+    # Load, convert to grayscale, and resize
     print(f"[image_to_hex] Loading '{args.input}' ...")
     img = Image.open(args.input).convert("L")          # L = 8-bit grayscale
     img = img.resize((args.width, args.height), Image.LANCZOS)
@@ -52,9 +52,9 @@ def main():
     width, height = img.size
     print(f"[image_to_hex] Resized to {width} x {height} (W x H)")
 
-    # ── Write hex file ────────────────────────────────────────────────────────
+    # Write hex file
     os.makedirs(os.path.dirname(os.path.abspath(args.out)),  exist_ok=True) if os.path.dirname(args.out) else None
-    pixels = list(img.getdata())          # flat list, row-major
+    pixels = list(img.getdata()) # flat list, row-major
 
     with open(args.out, "w") as fh:
         for px in pixels:
@@ -62,7 +62,7 @@ def main():
 
     print(f"[image_to_hex] Wrote {len(pixels)} pixels → '{args.out}'")
 
-    # ── Write info file ───────────────────────────────────────────────────────
+    # Write info file
     with open(args.info, "w") as fh:
         fh.write(f"{width}\n{height}\n")
 
