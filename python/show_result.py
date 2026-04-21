@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
 """
 File: show_result.py
 
 Description:
-
     Reads the original grayscale hex file and the filtered output hex file
     produced by the Verilog testbench, then displays both images side by side
     in a labeled Matplotlib window and saves a comparison PNG.
@@ -82,21 +80,21 @@ def read_hex_image(hex_path, width, height):
 def main():
     args = parse_args()
 
-    # ── Read image dimensions ─────────────────────────────────────────────────
+    # Read image dimensions
     with open(args.info, "r") as fh:
         lines = fh.read().strip().splitlines()
     width  = int(lines[0])
     height = int(lines[1])
     print(f"[show_result] Image dimensions: {width} x {height}")
 
-    # ── Load hex images ───────────────────────────────────────────────────────
+    # Load hex images
     img_in  = read_hex_image(args.input,  width, height)
     img_out = read_hex_image(args.output, width, height)
 
-    # ── Compute a simple difference image for reference ───────────────────────
+    # Compute a simple difference image for reference
     diff = np.abs(img_in.astype(np.int16) - img_out.astype(np.int16)).astype(np.uint8)
 
-    # ── Plot ──────────────────────────────────────────────────────────────────
+    # Plot
     fig = plt.figure(figsize=(14, 5))
     fig.suptitle(f"Image Filter Comparison — {args.filter}",
                  fontsize=14, fontweight="bold", y=1.01)
@@ -115,7 +113,7 @@ def main():
 
     plt.tight_layout()
 
-    # ── Save and show ─────────────────────────────────────────────────────────
+    # Save and show
     os.makedirs(os.path.dirname(os.path.abspath(args.save)), exist_ok=True) if os.path.dirname(args.save) else None
     plt.savefig(args.save, dpi=150, bbox_inches="tight")
     print(f"[show_result] Saved comparison image → '{args.save}'")
